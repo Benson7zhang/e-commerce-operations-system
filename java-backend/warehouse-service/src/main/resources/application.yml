@@ -1,0 +1,33 @@
+server:
+  port: 9006
+
+spring:
+  application:
+    name: warehouse-service
+  datasource:
+    url: jdbc:h2:file:./data/warehouse-service;MODE=MySQL;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+emall:
+  infra:
+    redis-enabled: false
+    mq-enabled: false
+    trace-backend: none
+    metrics-backend: prometheus

@@ -1,0 +1,66 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: order-service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  datasource:
+    url: jdbc:h2:file:./data/order-service;MODE=MySQL;AUTO_SERVER=TRUE
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 3000
+            readTimeout: 5000
+            loggerLevel: basic
+      circuitbreaker:
+        enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventory-service:
+        slidingWindowSize: 20
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 60
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+      product-service:
+        slidingWindowSize: 20
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 60
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+emall:
+  infra:
+    redis-enabled: false
+    mq-enabled: false
+    trace-backend: zipkin
+    metrics-backend: prometheus
+  services:
+    product-url: ${PRODUCT_SERVICE_URL:http://127.0.0.1:9001}
+    inventory-url: ${INVENTORY_SERVICE_URL:http://127.0.0.1:9003}

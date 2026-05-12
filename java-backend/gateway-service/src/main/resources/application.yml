@@ -1,0 +1,56 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+          - id: product-service
+            uri: ${PRODUCT_SERVICE_URL:http://127.0.0.1:9001}
+            predicates:
+              - Path=/api/products/**
+          - id: order-service
+            uri: ${ORDER_SERVICE_URL:http://127.0.0.1:9002}
+            predicates:
+              - Path=/api/orders/**
+          - id: inventory-service
+            uri: ${INVENTORY_SERVICE_URL:http://127.0.0.1:9003}
+            predicates:
+              - Path=/api/inventory/**
+          - id: return-service
+            uri: ${RETURN_SERVICE_URL:http://127.0.0.1:9004}
+            predicates:
+              - Path=/api/returns/**
+          - id: supplier-service
+            uri: ${SUPPLIER_SERVICE_URL:http://127.0.0.1:9005}
+            predicates:
+              - Path=/api/suppliers/**
+          - id: warehouse-service
+            uri: ${WAREHOUSE_SERVICE_URL:http://127.0.0.1:9006}
+            predicates:
+              - Path=/api/warehouses/**
+          - id: stats-service
+            uri: ${STATS_SERVICE_URL:http://127.0.0.1:9007}
+            predicates:
+              - Path=/api/stats/**
+          - id: channel-service
+            uri: ${CHANNEL_SERVICE_URL:http://127.0.0.1:9008}
+            predicates:
+              - Path=/api/channels/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+emall:
+  infra:
+    redis-enabled: false
+    mq-enabled: false
+    trace-backend: none
+    metrics-backend: prometheus

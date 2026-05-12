@@ -1,0 +1,31 @@
+# Java build output
+*.class
+java-backend/*/target/
+java-backend/common/target/
+java-backend/data/
+java-backend/*/data/
+
+# Maven
+java-backend/.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+logs/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code / AI tooling
+.claude/
+.ai/

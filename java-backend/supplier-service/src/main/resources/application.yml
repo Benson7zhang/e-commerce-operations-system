@@ -1,0 +1,19 @@
+server:
+  port: 9005
+
+spring:
+  application:
+    name: supplier-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+emall:
+  infra:
+    redis-enabled: false
+    mq-enabled: false
+    trace-backend: none
+    metrics-backend: prometheus

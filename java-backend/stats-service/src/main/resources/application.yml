@@ -1,0 +1,73 @@
+server:
+  port: 9007
+
+spring:
+  application:
+    name: stats-service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 10000
+            loggerLevel: basic
+      circuitbreaker:
+        enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      product-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 3
+      order-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 3
+      inventory-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 3
+      return-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 3
+      channel-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+emall:
+  infra:
+    redis-enabled: false
+    mq-enabled: false
+    trace-backend: zipkin
+    metrics-backend: prometheus
+  services:
+    product-url: ${PRODUCT_SERVICE_URL:http://127.0.0.1:9001}
+    order-url: ${ORDER_SERVICE_URL:http://127.0.0.1:9002}
+    inventory-url: ${INVENTORY_SERVICE_URL:http://127.0.0.1:9003}
+    return-url: ${RETURN_SERVICE_URL:http://127.0.0.1:9004}
+    channel-url: ${CHANNEL_SERVICE_URL:http://127.0.0.1:9008}
