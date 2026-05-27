@@ -114,4 +114,4 @@ cd java-backend
 
 ## 许可证
 
-本项目采用 [Apache License 2.0](LICENSE) 许可证。
+本项目采用 [MIT License](LICENSE) 许可证。
